@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.scintilla1 = new ScintillaNET.Scintilla();
             this.btnCargarPrograma = new System.Windows.Forms.Button();
             this.btnEjecutar = new System.Windows.Forms.Button();
@@ -40,18 +39,19 @@
             this.scintilla2 = new ScintillaNET.Scintilla();
             this.lblTotalErrores = new System.Windows.Forms.Label();
             this.dgvErrores = new System.Windows.Forms.DataGridView();
-            this.label4 = new System.Windows.Forms.Label();
-            this.dgvSimbolos = new System.Windows.Forms.DataGridView();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
             this.linea = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.mensaje = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label4 = new System.Windows.Forms.Label();
+            this.dgvSimbolos = new System.Windows.Forms.DataGridView();
             this.identificador = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.nombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tipoDato = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.valor = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.dgvErrores)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimbolos)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -59,18 +59,17 @@
             // 
             // scintilla1
             // 
-            this.scintilla1.Location = new System.Drawing.Point(105, 118);
+            this.scintilla1.Location = new System.Drawing.Point(127, 109);
             this.scintilla1.Name = "scintilla1";
-            this.scintilla1.Size = new System.Drawing.Size(365, 324);
+            this.scintilla1.Size = new System.Drawing.Size(462, 575);
             this.scintilla1.TabIndex = 2;
             this.scintilla1.TextChanged += new System.EventHandler(this.scintilla1_TextChanged);
-            this.scintilla1.Click += new System.EventHandler(this.scintilla1_Click);
             // 
             // btnCargarPrograma
             // 
-            this.btnCargarPrograma.Location = new System.Drawing.Point(12, 157);
+            this.btnCargarPrograma.Location = new System.Drawing.Point(12, 145);
             this.btnCargarPrograma.Name = "btnCargarPrograma";
-            this.btnCargarPrograma.Size = new System.Drawing.Size(80, 38);
+            this.btnCargarPrograma.Size = new System.Drawing.Size(80, 35);
             this.btnCargarPrograma.TabIndex = 3;
             this.btnCargarPrograma.Text = "Cargar Programa";
             this.btnCargarPrograma.UseVisualStyleBackColor = true;
@@ -79,9 +78,9 @@
             // btnEjecutar
             // 
             this.btnEjecutar.BackColor = System.Drawing.Color.PeachPuff;
-            this.btnEjecutar.Location = new System.Drawing.Point(12, 245);
+            this.btnEjecutar.Location = new System.Drawing.Point(12, 226);
             this.btnEjecutar.Name = "btnEjecutar";
-            this.btnEjecutar.Size = new System.Drawing.Size(80, 38);
+            this.btnEjecutar.Size = new System.Drawing.Size(80, 35);
             this.btnEjecutar.TabIndex = 4;
             this.btnEjecutar.Text = "Ejecutar";
             this.btnEjecutar.UseVisualStyleBackColor = false;
@@ -91,7 +90,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(170, 61);
+            this.label1.Location = new System.Drawing.Point(223, 56);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(224, 31);
             this.label1.TabIndex = 5;
@@ -99,9 +98,9 @@
             // 
             // btnGuardarPrograma
             // 
-            this.btnGuardarPrograma.Location = new System.Drawing.Point(12, 201);
+            this.btnGuardarPrograma.Location = new System.Drawing.Point(12, 186);
             this.btnGuardarPrograma.Name = "btnGuardarPrograma";
-            this.btnGuardarPrograma.Size = new System.Drawing.Size(80, 38);
+            this.btnGuardarPrograma.Size = new System.Drawing.Size(80, 35);
             this.btnGuardarPrograma.TabIndex = 6;
             this.btnGuardarPrograma.Text = "Guardar Programa";
             this.btnGuardarPrograma.UseVisualStyleBackColor = true;
@@ -109,9 +108,9 @@
             // 
             // btnGuardarArchivoTokens
             // 
-            this.btnGuardarArchivoTokens.Location = new System.Drawing.Point(887, 448);
+            this.btnGuardarArchivoTokens.Location = new System.Drawing.Point(1050, 68);
             this.btnGuardarArchivoTokens.Name = "btnGuardarArchivoTokens";
-            this.btnGuardarArchivoTokens.Size = new System.Drawing.Size(114, 38);
+            this.btnGuardarArchivoTokens.Size = new System.Drawing.Size(69, 35);
             this.btnGuardarArchivoTokens.TabIndex = 7;
             this.btnGuardarArchivoTokens.Text = "Guardar Archivo";
             this.btnGuardarArchivoTokens.UseVisualStyleBackColor = true;
@@ -121,7 +120,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(633, 61);
+            this.label2.Location = new System.Drawing.Point(732, 56);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(261, 31);
             this.label2.TabIndex = 8;
@@ -131,7 +130,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(1169, 60);
+            this.label3.Location = new System.Drawing.Point(1298, 56);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(103, 31);
             this.label3.TabIndex = 9;
@@ -139,16 +138,16 @@
             // 
             // scintilla2
             // 
-            this.scintilla2.Location = new System.Drawing.Point(521, 118);
+            this.scintilla2.Location = new System.Drawing.Point(620, 109);
             this.scintilla2.Name = "scintilla2";
-            this.scintilla2.Size = new System.Drawing.Size(480, 324);
+            this.scintilla2.Size = new System.Drawing.Size(499, 574);
             this.scintilla2.TabIndex = 10;
             // 
             // lblTotalErrores
             // 
             this.lblTotalErrores.AutoSize = true;
             this.lblTotalErrores.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotalErrores.Location = new System.Drawing.Point(1130, 91);
+            this.lblTotalErrores.Location = new System.Drawing.Point(1268, 81);
             this.lblTotalErrores.Name = "lblTotalErrores";
             this.lblTotalErrores.Size = new System.Drawing.Size(165, 24);
             this.lblTotalErrores.TabIndex = 12;
@@ -162,16 +161,30 @@
             this.dgvErrores.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.linea,
             this.mensaje});
-            this.dgvErrores.Location = new System.Drawing.Point(1057, 118);
+            this.dgvErrores.Location = new System.Drawing.Point(1138, 110);
             this.dgvErrores.Name = "dgvErrores";
-            this.dgvErrores.Size = new System.Drawing.Size(329, 324);
+            this.dgvErrores.Size = new System.Drawing.Size(399, 299);
             this.dgvErrores.TabIndex = 13;
+            // 
+            // linea
+            // 
+            this.linea.FillWeight = 50.76142F;
+            this.linea.HeaderText = "Linea";
+            this.linea.Name = "linea";
+            this.linea.ReadOnly = true;
+            // 
+            // mensaje
+            // 
+            this.mensaje.FillWeight = 149.2386F;
+            this.mensaje.HeaderText = "Error";
+            this.mensaje.Name = "mensaje";
+            this.mensaje.ReadOnly = true;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(99, 483);
+            this.label4.Location = new System.Drawing.Point(1212, 471);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(242, 31);
             this.label4.TabIndex = 14;
@@ -188,66 +201,11 @@
             this.nombre,
             this.tipoDato,
             this.valor});
-            this.dgvSimbolos.Location = new System.Drawing.Point(105, 533);
+            this.dgvSimbolos.Location = new System.Drawing.Point(1138, 514);
             this.dgvSimbolos.Name = "dgvSimbolos";
             this.dgvSimbolos.ReadOnly = true;
-            this.dgvSimbolos.Size = new System.Drawing.Size(719, 183);
+            this.dgvSimbolos.Size = new System.Drawing.Size(399, 169);
             this.dgvSimbolos.TabIndex = 15;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.ImageLocation = "C:\\Repositorios\\AUTOMATAS\\Gatosabelogo-new2.png";
-            this.pictureBox1.Location = new System.Drawing.Point(12, 12);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(100, 100);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox1.TabIndex = 16;
-            this.pictureBox1.TabStop = false;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(1308, 707);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(78, 13);
-            this.label5.TabIndex = 17;
-            this.label5.Text = "Version 2.0v";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(1259, 619);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(127, 19);
-            this.label6.TabIndex = 18;
-            this.label6.Text = "Desarrolladores";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(1274, 647);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(112, 45);
-            this.label7.TabIndex = 19;
-            this.label7.Text = "Raul Adriell Zavala\r\nCesar Vazquez Soto\r\nGael Onofre García";
-            // 
-            // linea
-            // 
-            this.linea.FillWeight = 50.76142F;
-            this.linea.HeaderText = "Linea";
-            this.linea.Name = "linea";
-            this.linea.ReadOnly = true;
-            // 
-            // mensaje
-            // 
-            this.mensaje.FillWeight = 149.2386F;
-            this.mensaje.HeaderText = "Error";
-            this.mensaje.Name = "mensaje";
-            this.mensaje.ReadOnly = true;
             // 
             // identificador
             // 
@@ -277,12 +235,64 @@
             this.valor.Name = "valor";
             this.valor.ReadOnly = true;
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.ImageLocation = "C:\\Repositorios\\AUTOMATAS\\Gatosabelogo-new2.png";
+            this.pictureBox1.Location = new System.Drawing.Point(12, 11);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(100, 100);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox1.TabIndex = 16;
+            this.pictureBox1.TabStop = false;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(6, 708);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(78, 13);
+            this.label5.TabIndex = 17;
+            this.label5.Text = "Version 2.0v";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Cambria", 9F, System.Drawing.FontStyle.Bold);
+            this.label6.Location = new System.Drawing.Point(6, 644);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(98, 14);
+            this.label6.TabIndex = 18;
+            this.label6.Text = "Desarrolladores";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Cambria", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(7, 660);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(94, 36);
+            this.label7.TabIndex = 19;
+            this.label7.Text = "Raul Adriell Zavala\r\nCesar Vazquez Soto\r\nGael Onofre García";
+            // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(102, 708);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(184, 12);
+            this.linkLabel1.TabIndex = 20;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "https://github.com/Zizur8/AnalizadorLexico";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1430, 746);
+            this.ClientSize = new System.Drawing.Size(1574, 737);
+            this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
@@ -300,8 +310,10 @@
             this.Controls.Add(this.btnEjecutar);
             this.Controls.Add(this.btnCargarPrograma);
             this.Controls.Add(this.scintilla1);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "Form1";
             this.Text = "Análizador Léxico";
+            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvErrores)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimbolos)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -334,6 +346,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn nombre;
         private System.Windows.Forms.DataGridViewTextBoxColumn tipoDato;
         private System.Windows.Forms.DataGridViewTextBoxColumn valor;
+        private System.Windows.Forms.LinkLabel linkLabel1;
     }
 }
 
