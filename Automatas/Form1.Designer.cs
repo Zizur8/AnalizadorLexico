@@ -52,9 +52,16 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.dgvFunciones = new System.Windows.Forms.DataGridView();
+            this.colNombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colTipoRetorno = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colParametros = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colCuerpo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label8 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvErrores)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimbolos)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvFunciones)).BeginInit();
             this.SuspendLayout();
             // 
             // scintilla1
@@ -163,7 +170,7 @@
             this.mensaje});
             this.dgvErrores.Location = new System.Drawing.Point(1138, 110);
             this.dgvErrores.Name = "dgvErrores";
-            this.dgvErrores.Size = new System.Drawing.Size(399, 299);
+            this.dgvErrores.Size = new System.Drawing.Size(399, 159);
             this.dgvErrores.TabIndex = 13;
             // 
             // linea
@@ -184,7 +191,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(1212, 471);
+            this.label4.Location = new System.Drawing.Point(1218, 302);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(242, 31);
             this.label4.TabIndex = 14;
@@ -201,10 +208,9 @@
             this.nombre,
             this.tipoDato,
             this.valor});
-            this.dgvSimbolos.Location = new System.Drawing.Point(1138, 514);
+            this.dgvSimbolos.Location = new System.Drawing.Point(1138, 346);
             this.dgvSimbolos.Name = "dgvSimbolos";
-            this.dgvSimbolos.ReadOnly = true;
-            this.dgvSimbolos.Size = new System.Drawing.Size(399, 169);
+            this.dgvSimbolos.Size = new System.Drawing.Size(399, 267);
             this.dgvSimbolos.TabIndex = 15;
             // 
             // identificador
@@ -212,28 +218,24 @@
             this.identificador.FillWeight = 50F;
             this.identificador.HeaderText = "Identificador";
             this.identificador.Name = "identificador";
-            this.identificador.ReadOnly = true;
             // 
             // nombre
             // 
             this.nombre.FillWeight = 99.49239F;
             this.nombre.HeaderText = "Nombre";
             this.nombre.Name = "nombre";
-            this.nombre.ReadOnly = true;
             // 
             // tipoDato
             // 
             this.tipoDato.FillWeight = 99.49239F;
             this.tipoDato.HeaderText = "Tipo De Dato";
             this.tipoDato.Name = "tipoDato";
-            this.tipoDato.ReadOnly = true;
             // 
             // valor
             // 
             this.valor.FillWeight = 99.49239F;
             this.valor.HeaderText = "Valor";
             this.valor.Name = "valor";
-            this.valor.ReadOnly = true;
             // 
             // pictureBox1
             // 
@@ -286,12 +288,59 @@
             this.linkLabel1.Text = "https://github.com/Zizur8/AnalizadorLexico";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
+            // dgvFunciones
+            // 
+            this.dgvFunciones.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvFunciones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvFunciones.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colNombre,
+            this.colTipoRetorno,
+            this.colParametros,
+            this.colCuerpo});
+            this.dgvFunciones.Location = new System.Drawing.Point(620, 708);
+            this.dgvFunciones.Name = "dgvFunciones";
+            this.dgvFunciones.Size = new System.Drawing.Size(917, 176);
+            this.dgvFunciones.TabIndex = 21;
+            this.dgvFunciones.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvFunciones_CellContentClick);
+            // 
+            // colNombre
+            // 
+            this.colNombre.HeaderText = "Nombre";
+            this.colNombre.Name = "colNombre";
+            // 
+            // colTipoRetorno
+            // 
+            this.colTipoRetorno.HeaderText = "Tipo Retorno";
+            this.colTipoRetorno.Name = "colTipoRetorno";
+            // 
+            // colParametros
+            // 
+            this.colParametros.HeaderText = "Parámetros";
+            this.colParametros.Name = "colParametros";
+            // 
+            // colCuerpo
+            // 
+            this.colCuerpo.HeaderText = "Cuerpo";
+            this.colCuerpo.Name = "colCuerpo";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(1203, 652);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(257, 31);
+            this.label8.TabIndex = 22;
+            this.label8.Text = "Tabla De Funciones";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1574, 737);
+            this.ClientSize = new System.Drawing.Size(1574, 926);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.dgvFunciones);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
@@ -317,6 +366,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvErrores)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimbolos)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvFunciones)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -347,6 +397,12 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn tipoDato;
         private System.Windows.Forms.DataGridViewTextBoxColumn valor;
         private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.DataGridView dgvFunciones;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colNombre;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colTipoRetorno;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colParametros;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colCuerpo;
+        private System.Windows.Forms.Label label8;
     }
 }
 

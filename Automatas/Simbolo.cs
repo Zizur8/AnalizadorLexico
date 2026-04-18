@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace Automatas
 {
-    internal class Simbolo
+    public class Simbolo
     {
         public int Numero { get; set; }
         public string Nombre { get; set; }
-        public string Tipo { get; set; } = "";
-        public string Valor { get; set; } = "";
+        public string Tipo { get; set; }   // ENT, DEC, TXT, BOOL, CAR, VAC
+        public string Valor { get; set; }  // literal o expresión
     }
+
 }

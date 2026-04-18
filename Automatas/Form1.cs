@@ -22,12 +22,13 @@ namespace Automatas
         Dictionary<string, Simbolo> tablaSimbolos = new Dictionary<string, Simbolo>();
         int contadorSimbolos = 1;
 
+        // NUEVA: tabla de funciones
+        Dictionary<string, Funcion> tablaFunciones = new Dictionary<string, Funcion>();
 
         public Form1()
         {
             InitializeComponent();
             InicializarEditorCodigoFuente();
-
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -35,29 +36,28 @@ namespace Automatas
 
         }
 
-        private void InicializarEditorCodigoFuente() {
+        private void InicializarEditorCodigoFuente()
+        {
             scintilla1.StyleResetDefault();
             scintilla1.Styles[Style.Default].Font = "Consolas";
-            scintilla1.Styles[Style.Default].Size = 12;
+            scintilla1.Styles[Style.Default].Size = 10;
             scintilla1.Styles[Style.Default].ForeColor = Color.Black;
             scintilla1.Styles[Style.Default].BackColor = Color.LightGray;
             scintilla1.StyleClearAll();
             // === ACTIVAR NÚMEROS DE LÍNEA ===
-            scintilla1.Margins[0].Width = 40; // ancho del margen
-            scintilla1.Margins[0].Type = MarginType.Number; // tipo: números de línea
+            scintilla1.Margins[0].Width = 40;
+            scintilla1.Margins[0].Type = MarginType.Number;
             scintilla1.Margins[0].Sensitive = false;
             scintilla1.Margins[0].Mask = 0;
 
-
             scintilla2.StyleResetDefault();
             scintilla2.Styles[Style.Default].Font = "Consolas";
-            scintilla2.Styles[Style.Default].Size = 12;
+            scintilla2.Styles[Style.Default].Size = 10;
             scintilla2.Styles[Style.Default].ForeColor = Color.Black;
             scintilla2.Styles[Style.Default].BackColor = Color.Gray;
             scintilla2.StyleClearAll();
-            // === ACTIVAR NÚMEROS DE LÍNEA ===
-            scintilla2.Margins[0].Width = 40; // ancho del margen
-            scintilla2.Margins[0].Type = MarginType.Number; // tipo: números de línea
+            scintilla2.Margins[0].Width = 40;
+            scintilla2.Margins[0].Type = MarginType.Number;
             scintilla2.Margins[0].Sensitive = false;
             scintilla2.Margins[0].Mask = 0;
 
@@ -65,26 +65,24 @@ namespace Automatas
             scintilla1.StyleNeeded += Scintilla1_StyleNeeded;
             scintilla1.UpdateUI += Scintilla1_UpdateUI;
 
-
             // === ESTILOS DE TEXTO ===
             scintilla1.Styles[1].ForeColor = Color.Blue;         // PR
             scintilla1.Styles[2].ForeColor = Color.Black;        // ID
             scintilla1.Styles[3].ForeColor = Color.Orange;       // CNU
             scintilla1.Styles[4].ForeColor = Color.Purple;       // Operadores
-            scintilla1.Styles[5].ForeColor = Color.Yellow;        // Cadenas
-            scintilla1.Styles[6].ForeColor = Color.Coral;     // Caracteres
-            scintilla1.Styles[7].ForeColor = Color.GreenYellow;     // Comentarios
-            scintilla1.Styles[8].ForeColor = Color.DarkGoldenrod;        // Caracteres especiales
+            scintilla1.Styles[5].ForeColor = Color.Yellow;       // Cadenas
+            scintilla1.Styles[6].ForeColor = Color.Coral;        // Caracteres
+            scintilla1.Styles[7].ForeColor = Color.GreenYellow;  // Comentarios
+            scintilla1.Styles[8].ForeColor = Color.DarkGoldenrod;// Caracteres especiales
             scintilla1.Styles[9].ForeColor = Color.Red;          // Errores
-            scintilla1.Styles[10].ForeColor = Color.Black;          // ASIG
+            scintilla1.Styles[10].ForeColor = Color.Black;       // ASIG
 
             // === INDICADOR PARA LÍNEAS CON ERROR ===
             var indError = scintilla1.Indicators[0];
             indError.Style = IndicatorStyle.StraightBox;
             indError.ForeColor = Color.Red;
-            indError.Alpha = 40;        // transparencia del relleno
+            indError.Alpha = 40;
             indError.OutlineAlpha = 255;
-
         }
 
 
@@ -102,14 +100,12 @@ namespace Automatas
 
         private void ResaltarLineasError()
         {
-            // Limpiar resaltados previos
             scintilla1.IndicatorCurrent = 0;
             scintilla1.IndicatorClearRange(0, scintilla1.TextLength);
 
-            // Recorrer errores y pintar la línea completa
             foreach (var err in listaErrores)
             {
-                int lineaIndex = err.linea - 1; // tus errores son 1-based, Scintilla es 0-based
+                int lineaIndex = err.linea - 1;
                 if (lineaIndex < 0 || lineaIndex >= scintilla1.Lines.Count)
                     continue;
 
@@ -131,30 +127,24 @@ namespace Automatas
 
         private void scintilla1_TextChanged(object sender, EventArgs e)
         {
-            // 1. Limpiar estilos de la línea editada
             int linea = scintilla1.CurrentLine;
             int start = scintilla1.Lines[linea].Position;
             int length = scintilla1.Lines[linea].Length;
 
             scintilla1.StartStyling(start);
-            scintilla1.SetStyling(length, 0); // estilo 0 = default
+            scintilla1.SetStyling(length, 0);
 
-            // 2. Re-analizar SOLO esa línea
             ReAnalizarLinea(linea);
-
         }
 
         private void ReAnalizarLinea(int linea)
         {
             string texto = scintilla1.Lines[linea].Text;
 
-            // 1. Borrar tokens previos de esa línea
             tokensGlobales.RemoveAll(t => t.linea == linea);
 
-            // 2. Tokenizar igual que en tu botón
             List<(int linea, int columna, string token)> tokens = TokenizarLinea(texto, linea);
 
-            // 3. Analizar cada token
             foreach (var tk in tokens)
             {
                 string token = tk.token;
@@ -165,10 +155,8 @@ namespace Automatas
 
                 int estilo = ObtenerEstilo(resultado);
 
-                // Guardar para repintado
                 tokensGlobales.Add((linea, columna, token, estilo));
 
-                // Pintar inmediatamente
                 PintarToken(linea, columna, token.Length, estilo);
             }
         }
@@ -193,13 +181,12 @@ namespace Automatas
             if (resultado.StartsWith("COM")) return 7;
             if (resultado.StartsWith("CE")) return 8;
             if (resultado.StartsWith("ASIG")) return 10;
-            return 9; // error
+            return 9;
         }
 
         private void Scintilla1_StyleNeeded(object sender, StyleNeededEventArgs e)
         {
-            // Recorremos todos los tokens que ya analizaste
-            foreach (var tk in tokensGlobales) // ← te explico esto abajo
+            foreach (var tk in tokensGlobales)
             {
                 PintarToken(tk.linea, tk.columna, tk.token.Length, tk.estilo);
             }
@@ -208,9 +195,16 @@ namespace Automatas
 
         private void PintarToken(int linea, int columnaInicio, int longitud, int estilo)
         {
-            int pos = scintilla1.Lines[linea].Position + columnaInicio;
-            scintilla1.StartStyling(pos);
-            scintilla1.SetStyling(longitud, estilo);
+            try
+            {
+                int pos = scintilla1.Lines[linea].Position + columnaInicio;
+                scintilla1.StartStyling(pos);
+                scintilla1.SetStyling(longitud, estilo);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
 
         //=========================================== Editor de Tokens =================================================
@@ -224,25 +218,21 @@ namespace Automatas
         {
             string t = token.Replace("TOKEN: ", "");
 
-            // Si Scintilla2 está completamente vacío, agrega una línea inicial
             if (scintilla2.Lines.Count == 1 && scintilla2.Lines[0].Text == "")
             {
                 scintilla2.AppendText(t);
                 return;
             }
 
-            // Obtener la última línea válida
             int ultima = scintilla2.Lines.Count - 1;
             string textoUltima = scintilla2.Lines[ultima].Text.Trim();
 
-            // Si la última línea está vacía → agrega el token sin espacio
             if (textoUltima.Length == 0)
             {
                 scintilla2.AppendText(t);
             }
             else
             {
-                // Si ya hay algo → agrega espacio + token
                 scintilla2.AppendText(" " + t);
             }
         }
@@ -250,39 +240,32 @@ namespace Automatas
 
         private List<(int linea, int columna, string token)> TokenizarLinea(string linea, int numLinea)
         {
-            List<(int linea, int columna, string token)> tokens =
-                new List<(int linea, int columna, string token)>();
+            List<(int linea, int columna, string token)> tokens = new List<(int linea, int columna, string token)>();
 
             int j = 0;
 
             while (j < linea.Length)
             {
-                // Saltar espacios
                 if (char.IsWhiteSpace(linea[j]))
                 {
                     j++;
                     continue;
                 }
 
-
-
-                // ⭐ 2. CADENA NORMAL (requiere cierre en la MISMA línea)
                 if (linea[j] == '"')
                 {
                     int inicio = j;
-                    j++; // avanzar después de la primera comilla
+                    j++;
 
-                    // buscar cierre
                     while (j < linea.Length && linea[j] != '"')
                         j++;
 
                     if (j < linea.Length && linea[j] == '"')
                     {
-                        j++; // incluir comilla final
+                        j++;
                     }
                     else
                     {
-                        // cadena sin cerrar → token inválido
                         j = linea.Length;
                     }
 
@@ -291,7 +274,6 @@ namespace Automatas
                     continue;
                 }
 
-                // ⭐ 3. TOKEN NORMAL
                 int inicioToken = j;
 
                 while (j < linea.Length && !char.IsWhiteSpace(linea[j]))
@@ -307,14 +289,12 @@ namespace Automatas
         //=========================================== Tabla de Erroes ===============================================
         private void LlenarDgvErrores()
         {
-
-            dgvErrores.Rows.Clear(); // limpiar tabla
+            dgvErrores.Rows.Clear();
 
             foreach (var err in listaErrores)
             {
                 dgvErrores.Rows.Add(err.linea, err.mensaje);
             }
-
         }
 
         //=========================================== Tabla de simbolos =============================================
@@ -329,24 +309,114 @@ namespace Automatas
             }
         }
 
-        private void RegistrarIdentificador(string nombre)
+        // NUEVO: tabla de funciones
+        private void LlenarTablaFunciones()
         {
-            // Normalizar (opcional)
+            dgvFunciones.Rows.Clear();
+
+            foreach (var f in tablaFunciones.Values)
+            {
+                string listaParams = string.Join(", ", f.Parametros.Select(p => $"{p.tipo} {p.nombre}"));
+
+                string cuerpo = "";
+                if (f.LineaCuerpoInicio > 0 && f.LineaCuerpoFin > 0)
+                    cuerpo = $"{f.LineaCuerpoInicio} - {f.LineaCuerpoFin}";
+                else
+                    cuerpo = "—";
+
+                dgvFunciones.Rows.Add(f.Nombre, f.TipoRetorno, listaParams, cuerpo);
+            }
+        }
+
+
+
+        private int RegistrarIdentificador(string nombre, string tipo = "", string valor = "")
+        {
             string id = nombre.Trim();
 
-            // ¿Ya existe?
             if (tablaSimbolos.ContainsKey(id))
-                return; // evitar duplicados
+            {
+                var s = tablaSimbolos[id];
 
-            // Crear símbolo
+                if (!string.IsNullOrEmpty(tipo))
+                    s.Tipo = tipo;
+
+                if (!string.IsNullOrEmpty(valor))
+                    s.Valor = valor;
+
+                return s.Numero;
+            }
+
             var sim = new Simbolo()
             {
                 Numero = contadorSimbolos,
-                Nombre = id
+                Nombre = id,
+                Tipo = tipo,
+                Valor = valor
             };
 
             tablaSimbolos.Add(id, sim);
             contadorSimbolos++;
+
+            return sim.Numero;
+        }
+        private void RegistrarFuncion(string nombre, string tipoRetorno, int lineaInicio)
+        {
+            string id = nombre.Trim();
+
+            if (!tablaFunciones.ContainsKey(id))
+            {
+                var f = new Funcion()
+                {
+                    Nombre = id,
+                    TipoRetorno = tipoRetorno,
+                    LineaInicio = lineaInicio,
+                    LineaCuerpoInicio = 0,
+                    LineaCuerpoFin = 0
+                };
+
+                tablaFunciones.Add(id, f);
+            }
+        }
+
+
+        private void AgregarParametroFuncion(string nombreFuncion, string tipoParam, string nombreParam)
+        {
+            if (!tablaFunciones.ContainsKey(nombreFuncion))
+                return;
+
+            var f = tablaFunciones[nombreFuncion];
+            f.Parametros.Add((tipoParam, nombreParam));
+        }
+
+        // Mapea PR23..PR28 a tipo de dato de tu lenguaje
+        private string ObtenerTipoDesdePR(string tokenPR)
+        {
+            switch (tokenPR)
+            {
+                case "PR23": return "ENT";
+                case "PR24": return "DEC";
+                case "PR25": return "TXT";
+                case "PR26": return "BOOL";
+                case "PR27": return "CAR";
+                case "PR28": return "VAC";
+                default: return "";
+            }
+        }
+
+        // Obtiene el valor de una variable en una línea: vX = ... ;
+        private string ObtenerValorAsignadoEnLinea(string lineaTexto, int columnaId)
+        {
+            int idxAsig = lineaTexto.IndexOf('=', columnaId);
+            if (idxAsig == -1)
+                return "";
+
+            int idxPuntoComa = lineaTexto.IndexOf(';', idxAsig);
+            if (idxPuntoComa == -1)
+                idxPuntoComa = lineaTexto.Length;
+
+            string valor = lineaTexto.Substring(idxAsig + 1, idxPuntoComa - idxAsig - 1);
+            return valor.Trim();
         }
 
         //===============================================  Botones  =====================================================================
@@ -380,7 +450,6 @@ namespace Automatas
                 string contenido = System.IO.File.ReadAllText(open.FileName);
                 scintilla1.Text = contenido;
 
-                // Opcional: limpiar tokens y repintar
                 tokensGlobales.Clear();
                 ReAnalizarTodo();
             }
@@ -388,55 +457,52 @@ namespace Automatas
 
         private void btnEjecutar_Click(object sender, EventArgs e)
         {
-            // Resetear estructuras
             tokensGlobales.Clear();
             listaErrores.Clear();
             tablaSimbolos.Clear();
+            tablaFunciones.Clear();
             contadorSimbolos = 1;
             scintilla2.Text = "";
             intTotalErrores = 0;
 
-
-
             int totalLineas = scintilla1.Lines.Count;
 
-            // RECORRER LÍNEA POR LÍNEA
+            string nombreFuncionActual = null;   // función que estamos procesando
+            bool esDeclaracionFuncion = false;   // estamos dentro del encabezado FUNC
+            bool dentroDeFuncion = false;        // estamos dentro del cuerpo { }
+            string tipoActual = "";              // tipo actual leído (TXT, ENT, BOOL, etc.)
+
             for (int i = 0; i < totalLineas; i++)
             {
                 string linea = scintilla1.Lines[i].Text;
                 List<(int linea, int columna, string token)> tokens = new List<(int, int, string)>();
 
-
+                // TOKENIZAR
                 int j = 0;
                 while (j < linea.Length)
                 {
-                    // Saltar espacios
                     if (char.IsWhiteSpace(linea[j]))
                     {
                         j++;
                         continue;
                     }
 
-                    // 1. CADENAS QUE EMPIEZAN CON "
                     if (linea[j] == '"')
                     {
                         int inicio = j;
-                        j++; // avanzar después de la primera comilla
+                        j++;
 
-                        // Buscar la comilla de cierre
                         while (j < linea.Length && linea[j] != '"')
                             j++;
 
                         if (j < linea.Length && linea[j] == '"')
                         {
-                            // CADENA COMPLETA
-                            j++; // incluir la comilla final
+                            j++;
                             string tok = linea.Substring(inicio, j - inicio).Trim();
                             tokens.Add((i + 1, inicio, tok));
                         }
                         else
                         {
-                            // CADENA SIN CERRAR
                             string tok = linea.Substring(inicio).Trim();
                             tokens.Add((i + 1, inicio, tok));
                         }
@@ -444,7 +510,6 @@ namespace Automatas
                         continue;
                     }
 
-                    // 2. TOKEN NORMAL (sin comillas)
                     int inicioToken = j;
                     while (j < linea.Length && !char.IsWhiteSpace(linea[j]))
                         j++;
@@ -454,36 +519,98 @@ namespace Automatas
                         tokens.Add((i + 1, inicioToken, tokNormal));
                 }
 
-                // ---- ANALIZAR TOKENS ----
+                // PROCESAR TOKENS
                 foreach (var tk in tokens)
                 {
                     int lineaToken = tk.linea;
                     int columna = tk.columna;
-                    string token = tk.token.Trim();
+                    string lexema = tk.token.Trim();
 
                     try
                     {
-                        string resultado = lexico.AnalizarCadena(token);
+                        string resultado = lexico.AnalizarCadena(lexema);
+                        string resultadoNormalizado = resultado.Replace("TOKEN: ", "");
 
-                        Console.WriteLine($"|{token}| → {resultado}");
-
-                        // Si el analizador detecta error
-                        if (resultado.ToLower().Contains("inválido") ||
-                            resultado.ToLower().Contains("inválida") ||
-                            resultado.ToLower().Contains("error"))
+                        if (resultadoNormalizado.ToLower().Contains("inválido") ||
+                            resultadoNormalizado.ToLower().Contains("inválida") ||
+                            resultadoNormalizado.ToLower().Contains("error"))
                         {
-                            listaErrores.Add((lineaToken, resultado));
+                            listaErrores.Add((lineaToken, resultadoNormalizado));
                             AgregarTokenATabla("error");
                             continue;
                         }
-                        else
+
+                        // FUNC
+                        if (lexema.Equals("FUNC", StringComparison.OrdinalIgnoreCase))
                         {
-                            RegistrarIdentificador(token);
+                            esDeclaracionFuncion = true;
+                            AgregarTokenATabla(resultadoNormalizado);
+                            continue;
                         }
 
-                        // Agregar token al archivo de tokens
-                        AgregarTokenATabla(resultado);
+                        // TIPOS
+                        if (resultadoNormalizado.StartsWith("PR"))
+                        {
+                            string posibleTipo = ObtenerTipoDesdePR(resultadoNormalizado);
+                            if (!string.IsNullOrEmpty(posibleTipo))
+                                tipoActual = posibleTipo;
 
+                            AgregarTokenATabla(resultadoNormalizado);
+                            continue;
+                        }
+
+                        // IDF = nombre de función
+                        if (resultadoNormalizado.StartsWith("IDF"))
+                        {
+                            nombreFuncionActual = lexema;
+
+                            tablaFunciones[nombreFuncionActual] = new Funcion()
+                            {
+                                Nombre = nombreFuncionActual,
+                                TipoRetorno = tipoActual,
+                                LineaInicio = lineaToken,
+                                LineaCuerpoInicio = 0,
+                                LineaCuerpoFin = 0
+                            };
+
+                            AgregarTokenATabla(resultadoNormalizado);
+                            continue;
+                        }
+
+                        // PARÁMETROS DE FUNCIÓN
+                        if (esDeclaracionFuncion && resultadoNormalizado.StartsWith("IDV"))
+                        {
+                            if (!string.IsNullOrEmpty(nombreFuncionActual))
+                            {
+                                string tipoParam = string.IsNullOrEmpty(tipoActual) ? "?" : tipoActual;
+                                tablaFunciones[nombreFuncionActual].Parametros.Add((tipoParam, lexema));
+                            }
+
+                            AgregarTokenATabla(resultadoNormalizado);
+                            continue;
+                        }
+
+                        // DECLARACIÓN DE VARIABLE GLOBAL (solo si NO estamos dentro de una función)
+                        if (resultadoNormalizado.StartsWith("IDV") &&
+                            !string.IsNullOrEmpty(tipoActual) &&
+                            !dentroDeFuncion)
+                        {
+                            string valor = ObtenerValorAsignadoEnLinea(linea, columna);
+
+                            int num = RegistrarIdentificador(lexema, tipoActual, valor);
+                            AgregarTokenATabla(resultadoNormalizado + num.ToString());
+                            continue;
+                        }
+
+                        // USO DE VARIABLE (NO declaración)
+                        if (resultadoNormalizado.StartsWith("IDV"))
+                        {
+                            AgregarTokenATabla(resultadoNormalizado);
+                            continue;
+                        }
+
+                        // Cualquier otro token
+                        AgregarTokenATabla(resultadoNormalizado);
                     }
                     catch
                     {
@@ -492,17 +619,46 @@ namespace Automatas
                     }
                 }
 
-                // Nueva línea en archivo de tokens
+                // DETECTAR INICIO DEL CUERPO
+                if (linea.Trim() == "{")
+                {
+                    dentroDeFuncion = true;
+
+                    if (!string.IsNullOrEmpty(nombreFuncionActual))
+                        tablaFunciones[nombreFuncionActual].LineaCuerpoInicio = i + 1;
+                }
+
+                // DETECTAR FIN DEL CUERPO
+                if (linea.Trim() == "}")
+                {
+                    dentroDeFuncion = false;
+
+                    if (!string.IsNullOrEmpty(nombreFuncionActual))
+                        tablaFunciones[nombreFuncionActual].LineaCuerpoFin = i + 1;
+                }
+
+                // FIN DEL ENCABEZADO DE FUNCIÓN
+                if (esDeclaracionFuncion && linea.Contains(")"))
+                {
+                    esDeclaracionFuncion = false;
+                    tipoActual = "";
+                }
+
                 NuevaLineaTokens();
 
-                // Actualizar UI
                 intTotalErrores = listaErrores.Count;
                 lblTotalErrores.Text = "Total de Errores: " + intTotalErrores.ToString();
                 LlenarDgvErrores();
                 LlenarTablaSimbolos();
+                LlenarTablaFunciones();
                 ResaltarLineasError();
             }
         }
+
+
+
+
+
 
         private void GuardarTokens()
         {
@@ -517,7 +673,7 @@ namespace Automatas
             }
         }
 
-        
+
         private void btnCargarPrograma_Click(object sender, EventArgs e)
         {
             CargarArchivo();
@@ -533,8 +689,12 @@ namespace Automatas
 
         }
 
-        //============================================================================================================
+        private void dgvFunciones_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
 
+        }
+
+        //============================================================================================================
 
     }
 }
