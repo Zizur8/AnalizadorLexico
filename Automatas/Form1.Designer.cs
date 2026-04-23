@@ -70,6 +70,7 @@
             this.scintilla1.Name = "scintilla1";
             this.scintilla1.Size = new System.Drawing.Size(462, 575);
             this.scintilla1.TabIndex = 2;
+            this.scintilla1.CharAdded += new System.EventHandler<ScintillaNET.CharAddedEventArgs>(this.scintilla1_CharAdded);
             this.scintilla1.TextChanged += new System.EventHandler(this.scintilla1_TextChanged);
             // 
             // btnCargarPrograma
@@ -129,9 +130,9 @@
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(732, 56);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(261, 31);
+            this.label2.Size = new System.Drawing.Size(239, 31);
             this.label2.TabIndex = 8;
-            this.label2.Text = "Archivo de TOKENS";
+            this.label2.Text = "Archivo de Tokens";
             // 
             // label3
             // 
@@ -149,6 +150,7 @@
             this.scintilla2.Name = "scintilla2";
             this.scintilla2.Size = new System.Drawing.Size(499, 574);
             this.scintilla2.TabIndex = 10;
+            this.scintilla2.CharAdded += new System.EventHandler<ScintillaNET.CharAddedEventArgs>(this.scintilla2_CharAdded);
             // 
             // lblTotalErrores
             // 
@@ -176,7 +178,7 @@
             // linea
             // 
             this.linea.FillWeight = 50.76142F;
-            this.linea.HeaderText = "Linea";
+            this.linea.HeaderText = "Línea";
             this.linea.Name = "linea";
             this.linea.ReadOnly = true;
             // 
@@ -195,7 +197,7 @@
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(242, 31);
             this.label4.TabIndex = 14;
-            this.label4.Text = "Tabla De Simbolos";
+            this.label4.Text = "Tabla De Símbolos";
             // 
             // dgvSimbolos
             // 
@@ -253,9 +255,9 @@
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.Location = new System.Drawing.Point(9, 896);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(78, 13);
+            this.label5.Size = new System.Drawing.Size(71, 13);
             this.label5.TabIndex = 17;
-            this.label5.Text = "Version 2.0v";
+            this.label5.Text = "Versión 2.1";
             // 
             // label6
             // 
@@ -273,9 +275,9 @@
             this.label7.Font = new System.Drawing.Font("Cambria", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.Location = new System.Drawing.Point(10, 848);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(94, 36);
+            this.label7.Size = new System.Drawing.Size(113, 36);
             this.label7.TabIndex = 19;
-            this.label7.Text = "Raul Adriell Zavala\r\nCesar Vazquez Soto\r\nGael Onofre García";
+            this.label7.Text = "Raúl Adriell Zavala Lira\r\nCésar Vézquez Soto\r\nGael Onofre García";
             // 
             // linkLabel1
             // 
@@ -389,8 +391,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.DataGridViewTextBoxColumn linea;
-        private System.Windows.Forms.DataGridViewTextBoxColumn mensaje;
         private System.Windows.Forms.DataGridViewTextBoxColumn identificador;
         private System.Windows.Forms.DataGridViewTextBoxColumn nombre;
         private System.Windows.Forms.DataGridViewTextBoxColumn tipoDato;
@@ -402,6 +402,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colParametros;
         private System.Windows.Forms.DataGridViewTextBoxColumn colCuerpo;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.DataGridViewTextBoxColumn linea;
+        private System.Windows.Forms.DataGridViewTextBoxColumn mensaje;
     }
 }
 

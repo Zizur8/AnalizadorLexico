@@ -73,12 +73,17 @@ namespace Automatas
             scintilla1.Styles[9].ForeColor = Color.Red;          // Errores
             scintilla1.Styles[10].ForeColor = Color.Black;       // ASIG
 
+            scintilla1.TabWidth = 5;
+            scintilla1.UseTabs = false;
+
+
             // Indicador de línea con error
             var indError = scintilla1.Indicators[0];
             indError.Style = IndicatorStyle.StraightBox;
             indError.ForeColor = Color.Red;
             indError.Alpha = 40;
             indError.OutlineAlpha = 255;
+
         }
 
         private void InitializeTokensEditor()
@@ -110,6 +115,8 @@ namespace Automatas
             scintilla2.Styles[8].ForeColor = Color.DarkGoldenrod;// Caracteres especiales
             scintilla2.Styles[9].ForeColor = Color.Red;          // Errores
             scintilla2.Styles[10].ForeColor = Color.Black;       // ASIG
+
+
         }
 
         // -------------------- Reanálisis y resaltado --------------------
@@ -368,6 +375,21 @@ namespace Automatas
 
         private void GuardarArchivo()
         {
+            if (HayTextoConError())
+            {
+                var result = MessageBox.Show(
+                    "¿Estás seguro de guardar el código fuente si hay errores presentes?",
+                    "Advertencia",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning
+                );
+
+                if (result == DialogResult.No)
+                {
+                    return; // no guarda si el usuario dice NO
+                }
+            }
+
             using (SaveFileDialog save = new SaveFileDialog())
             {
                 save.Filter = "Archivos de texto (*.txt)|*.txt|Todos los archivos (*.*)|*.*";
@@ -379,6 +401,8 @@ namespace Automatas
                 }
             }
         }
+
+
 
         private void CargarArchivo()
         {
@@ -438,8 +462,8 @@ namespace Automatas
                         // Error léxico
                         if (IsTokenInvalido(resultado))
                         {
-                            listaErrores.Add((lineaToken, resultadoNormalizado));
-                            AgregarTokenATabla("error", 9);
+                            listaErrores.Add((lineaToken, resultado));
+                            AgregarTokenATabla(resultado, 9);
                             continue;
                         }
 
@@ -451,7 +475,7 @@ namespace Automatas
                             continue;
                         }
 
-                        // Tipos (PR23..PR28)
+                        // Tipos (PR23..PR28) De datos devueltos
                         if (resultadoNormalizado.StartsWith("PR"))
                         {
                             string posibleTipo = ObtenerTipoDesdePR(resultadoNormalizado);
@@ -471,7 +495,7 @@ namespace Automatas
                             continue;
                         }
 
-                        // Parámetros dentro del encabezado de función
+                        // Parámetros dentro del encabezado de función1
                         if (esDeclaracionFuncion && resultadoNormalizado.StartsWith("IDV"))
                         {
                             if (!string.IsNullOrEmpty(nombreFuncionActual))
@@ -553,6 +577,19 @@ namespace Automatas
 
         private void GuardarTokens()
         {
+            if (string.IsNullOrWhiteSpace(scintilla2.Text))
+            {
+                MessageBox.Show("No es posible guardar Tokens porque no existen.",
+                                "Operación Cancelada",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
+                return;
+            }
+
+            if (listaErrores.Count > 0) {
+                MessageBox.Show("No es posible guardar Tokens. Existen Errores de Tokens.","Operación Cancelada",MessageBoxButtons.OK,MessageBoxIcon.Stop);
+                return;
+            }
             using (SaveFileDialog save = new SaveFileDialog())
             {
                 save.Filter = "Archivos de texto (*.txt)|*.txt|Todos los archivos (*.*)|*.*";
@@ -638,5 +675,35 @@ namespace Automatas
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) { }
         private void dgvFunciones_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
+
+        private void scintilla2_CharAdded(object sender, CharAddedEventArgs e)
+        {
+
+        }
+
+        private void scintilla1_CharAdded(object sender, CharAddedEventArgs e)
+        {
+            int pos = scintilla1.CurrentPosition;
+            string texto = scintilla1.GetTextRange(pos - 5, 5);
+
+            if (texto == "     ") // cinco espacios
+            {
+                scintilla1.DeleteRange(pos - 5, 5);
+                scintilla1.InsertText(pos - 5, "\t"); // o "     " si quieres forzar tu tab
+                scintilla1.GotoPosition(pos - 5 + 1); // mueve el cursor después del tab
+            }
+        }
+
+        private bool HayTextoConError()
+        {
+            for (int i = 0; i < scintilla1.TextLength; i++)
+            {
+                int style = scintilla1.GetStyleAt(i);
+                if (style == 9) // estilo de error
+                    return true;
+            }
+            return false;
+        }
+
     }
 }
