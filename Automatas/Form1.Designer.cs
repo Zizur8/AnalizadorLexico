@@ -58,10 +58,14 @@
             this.colParametros = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colCuerpo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label8 = new System.Windows.Forms.Label();
+            this.dgvErroresSintaxis = new System.Windows.Forms.DataGridView();
+            this.numLinea = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.errorSintaxis = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvErrores)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimbolos)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFunciones)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvErroresSintaxis)).BeginInit();
             this.SuspendLayout();
             // 
             // scintilla1
@@ -299,9 +303,9 @@
             this.colTipoRetorno,
             this.colParametros,
             this.colCuerpo});
-            this.dgvFunciones.Location = new System.Drawing.Point(620, 708);
+            this.dgvFunciones.Location = new System.Drawing.Point(1050, 708);
             this.dgvFunciones.Name = "dgvFunciones";
-            this.dgvFunciones.Size = new System.Drawing.Size(917, 176);
+            this.dgvFunciones.Size = new System.Drawing.Size(487, 176);
             this.dgvFunciones.TabIndex = 21;
             this.dgvFunciones.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvFunciones_CellContentClick);
             // 
@@ -335,12 +339,37 @@
             this.label8.TabIndex = 22;
             this.label8.Text = "Tabla De Funciones";
             // 
+            // dgvErroresSintaxis
+            // 
+            this.dgvErroresSintaxis.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvErroresSintaxis.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.numLinea,
+            this.errorSintaxis});
+            this.dgvErroresSintaxis.Location = new System.Drawing.Point(129, 708);
+            this.dgvErroresSintaxis.Name = "dgvErroresSintaxis";
+            this.dgvErroresSintaxis.Size = new System.Drawing.Size(879, 150);
+            this.dgvErroresSintaxis.TabIndex = 23;
+            // 
+            // numLinea
+            // 
+            this.numLinea.HeaderText = "Linea";
+            this.numLinea.MinimumWidth = 50;
+            this.numLinea.Name = "numLinea";
+            this.numLinea.Width = 50;
+            // 
+            // errorSintaxis
+            // 
+            this.errorSintaxis.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.errorSintaxis.HeaderText = "Error";
+            this.errorSintaxis.Name = "errorSintaxis";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1574, 926);
+            this.Controls.Add(this.dgvErroresSintaxis);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.dgvFunciones);
             this.Controls.Add(this.linkLabel1);
@@ -368,6 +397,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimbolos)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFunciones)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvErroresSintaxis)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -404,6 +434,9 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.DataGridViewTextBoxColumn linea;
         private System.Windows.Forms.DataGridViewTextBoxColumn mensaje;
+        private System.Windows.Forms.DataGridView dgvErroresSintaxis;
+        private System.Windows.Forms.DataGridViewTextBoxColumn numLinea;
+        private System.Windows.Forms.DataGridViewTextBoxColumn errorSintaxis;
     }
 }
 
