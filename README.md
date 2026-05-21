@@ -182,7 +182,7 @@ graph TD
     V --> F
 ```
 
-## Explicacion corta
+## Explicacion para la profe
 
 1. El analizador recibe una cadena de tokens.
 2. Agrega `EOF` para saber donde termina la entrada.
