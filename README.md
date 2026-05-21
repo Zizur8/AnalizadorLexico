@@ -145,8 +145,6 @@ INI {
 
 Este diagrama representa el metodo principal del analizador sintactico descendente predictivo LL(1).
 
-Nota: si lo pegas en Mermaid Live Editor, pega solo el contenido de adentro del bloque, sin las lineas ```mermaid y ```.
-
 ```mermaid
 graph TD
     A([Inicio]) --> B["Recibir lista de tokens"]
@@ -194,20 +192,6 @@ graph TD
 6. Si la cima es no terminal, busca una produccion en la tabla M.
 7. Si encuentra regla, expande la produccion en la pila.
 8. Si no encuentra regla, registra error y se recupera saltando a un punto seguro.
-
-## Ejemplo de condicion
-
-Condicion:
-
-```gatosabe
-vEdad >= 18 & vActivo == VDD
-```
-
-Tokens:
-
-```txt
-IDV OPR3 CNU OPL1 IDV OPR6 PR20 EOF
-```
 
 La cadena se acepta si al final la pila queda en `EOF` y el token actual tambien es `EOF`.
 
