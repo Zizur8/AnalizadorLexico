@@ -24,7 +24,8 @@ namespace Automatas
         // --- Variables para el Análisis Sintáctico ---
         private List<(string Tipo, string Valor, int Linea)> tokensSintactico = new List<(string, string, int)>();
         private List<(int Linea, string Mensaje)> erroresSintacticos = new List<(int, string)>();
-        private Dictionary<string, Dictionary<string, List<string>>> tablaM = new Dictionary<string, Dictionary<string, List<string>>>();
+        private AnalizadorSintacticoLl1 analizadorSintactico =
+            new AnalizadorSintacticoLl1(TablaSintacticaGatoSabe.CrearTablaCompleta());
 
         // Tabla de símbolos y funciones
         private Dictionary<string, Simbolo> tablaSimbolos = new Dictionary<string, Simbolo>();
@@ -35,7 +36,6 @@ namespace Automatas
         {
             InitializeComponent();
             InitializeEditors();
-            ConstruirTablaM(); // Inicializamos la Tabla LL1 completa
         }
 
         // -------------------- Inicialización --------------------
@@ -114,366 +114,13 @@ namespace Automatas
             scintilla2.Styles[10].ForeColor = Color.Black;
         }
 
-        // -------------------- Inicialización de la Tabla M (Sintáctica COMPLETA) --------------------
-
-        private void ConstruirTablaM()
-        {
-            tablaM.Clear();
-            List<string> prTipos = new List<string> { "PR23", "PR24", "PR25", "PR26", "PR27" };
-
-            // 1. Bloque Principal
-            AgregarRegla("S", "PR1", "IN01");
-            AgregarRegla("IN01", "PR1", "PR1", "CE3", "INS", "CE4");
-
-            // INS -> IN INS | e
-            AgregarRegla("INS", "CE4", "e");
-
-            // FIRST(IN) para derivar INS -> IN INS
-            foreach (var pr in prTipos) AgregarRegla("INS", pr, "IN", "INS");
-            AgregarRegla("INS", "IDV", "IN", "INS");
-            AgregarRegla("INS", "PR11", "IN", "INS");
-            AgregarRegla("INS", "PR13", "IN", "INS");
-            AgregarRegla("INS", "PR15", "IN", "INS");
-            AgregarRegla("INS", "PR16", "IN", "INS");
-            AgregarRegla("INS", "PR18", "IN", "INS");
-            AgregarRegla("INS", "PR5", "IN", "INS");
-            AgregarRegla("INS", "PR6", "IN", "INS");
-            AgregarRegla("INS", "PR7", "IN", "INS");
-            AgregarRegla("INS", "PR8", "IN", "INS");
-            AgregarRegla("INS", "PR9", "IN", "INS");
-            AgregarRegla("INS", "PR10", "IN", "INS");
-            AgregarRegla("INS", "PR29", "IN", "INS");
-            AgregarRegla("INS", "PR30", "IN", "INS");
-            AgregarRegla("INS", "PR31", "IN", "INS");
-            AgregarRegla("INS", "PR2", "IN", "INS");
-            AgregarRegla("INS", "PR19", "IN", "INS");
-            AgregarRegla("INS", "PR3", "IN", "INS");
-            AgregarRegla("INS", "IDF", "IN", "INS");
-
-            // 2. IN derivaciones
-            foreach (var pr in prTipos) AgregarRegla("IN", pr, "IN02");
-            AgregarRegla("IN", "IDV", "IN03");
-            AgregarRegla("IN", "PR11", "IN04");
-            AgregarRegla("IN", "PR13", "IN05");
-            AgregarRegla("IN", "PR15", "IN06");
-            AgregarRegla("IN", "PR16", "IN07");
-            AgregarRegla("IN", "PR18", "IN08");
-            AgregarRegla("IN", "PR5", "IN10");
-            AgregarRegla("IN", "PR6", "IN11");
-            AgregarRegla("IN", "PR7", "IN12");
-            AgregarRegla("IN", "PR8", "IN13");
-            AgregarRegla("IN", "PR9", "IN14");
-            AgregarRegla("IN", "PR10", "IN15");
-            AgregarRegla("IN", "PR29", "IN16");
-            AgregarRegla("IN", "PR30", "IN17");
-            AgregarRegla("IN", "PR31", "IN18");
-            AgregarRegla("IN", "PR2", "IN19");
-            AgregarRegla("IN", "PR19", "IN20");
-            AgregarRegla("IN", "PR3", "IN21");
-            AgregarRegla("IN", "IDF", "IN22");
-
-            // 3. Declaraciones y Asignaciones
-            foreach (var pr in prTipos) AgregarRegla("IN02", pr, "TIPO_VAR", "IDV", "ASIG_OPC", "CE8");
-            foreach (var pr in prTipos) AgregarRegla("TIPO_VAR", pr, pr);
-
-            AgregarRegla("ASIG_OPC", "ASIG", "ASIG", "EXP");
-            AgregarRegla("ASIG_OPC", "CE8", "e");
-
-            AgregarRegla("IN03", "IDV", "IDV", "ASIG", "EXP_IO", "CE8");
-            AgregarRegla("EXP_IO", "PR4", "PR4", "CE1", "CE2");
-            AgregarRegla("EXP_IO", "IDV", "EXP");
-            AgregarRegla("EXP_IO", "CNU", "EXP");
-            AgregarRegla("EXP_IO", "CAD", "EXP");
-            AgregarRegla("EXP_IO", "CAR", "EXP");
-            AgregarRegla("EXP_IO", "PR20", "EXP");
-            AgregarRegla("EXP_IO", "PR21", "EXP");
-            AgregarRegla("EXP_IO", "PR22", "EXP");
-            AgregarRegla("EXP_IO", "IDF", "EXP");
-            AgregarRegla("EXP_IO", "CE1", "EXP");
-
-            // 4. Estructuras de Control
-            AgregarRegla("IN04", "PR11", "PR11", "CE1", "COND", "CE2", "CE3", "INS", "CE4", "IN04_1");
-            AgregarRegla("IN04_1", "PR12", "PR12", "CE3", "INS", "CE4");
-            foreach (var t in prTipos) AgregarRegla("IN04_1", t, "e");
-            AgregarRegla("IN04_1", "IDV", "e"); AgregarRegla("IN04_1", "PR11", "e");
-            AgregarRegla("IN04_1", "CE4", "e"); AgregarRegla("IN04_1", "EOF", "e");
-
-            AgregarRegla("IN05", "PR13", "PR13", "CE1", "IDV", "CE2", "CE3", "CASOS", "CE4");
-            AgregarRegla("CASOS", "CNU", "VAL_CASO", "CE20", "INS", "PR19", "CE8", "CASOS");
-            AgregarRegla("CASOS", "CAD", "VAL_CASO", "CE20", "INS", "PR19", "CE8", "CASOS");
-            AgregarRegla("CASOS", "CAR", "VAL_CASO", "CE20", "INS", "PR19", "CE8", "CASOS");
-            AgregarRegla("CASOS", "PR14", "PR14", "CE20", "INS", "PR19", "CE8");
-            AgregarRegla("VAL_CASO", "CNU", "CNU");
-            AgregarRegla("VAL_CASO", "CAD", "CAD");
-            AgregarRegla("VAL_CASO", "CAR", "CAR");
-
-            AgregarRegla("IN06", "PR15", "PR15", "CE1", "COND", "CE2", "CE3", "INS", "CE4");
-            AgregarRegla("IN07", "PR16", "PR16", "CE3", "INS", "CE4", "PR17", "CE1", "COND", "CE2", "CE8");
-
-            AgregarRegla("IN08", "PR18", "PR18", "CE1", "INIT_POR", "CE8", "COND", "CE8", "IDV", "ASIG", "EXP", "CE2", "CE3", "INS", "CE4");
-            foreach (var pr in prTipos) AgregarRegla("INIT_POR", pr, "TIPO_VAR", "IDV", "ASIG", "EXP");
-            AgregarRegla("INIT_POR", "IDV", "IDV", "ASIG", "EXP");
-
-            AgregarRegla("IN20", "PR19", "PR19", "CE8");
-
-            // 5. IO y Gráficas
-            AgregarRegla("IN10", "PR5", "PR5", "CE1", "EXP", "CE2", "CE8");
-            AgregarRegla("IN11", "PR6", "PR6", "CE1", "CE2", "CE8");
-            AgregarRegla("IN12", "PR7", "PR7", "CE1", "CAD", "CE2", "CE8");
-            AgregarRegla("IN13", "PR8", "PR8", "CE1", "CAD", "CE2", "CE8");
-            AgregarRegla("IN14", "PR9", "PR9", "CE1", "CNU", "CE2", "CE8");
-            AgregarRegla("IN15", "PR10", "PR10", "CE1", "CNU", "CE7", "CNU", "CE2", "CE8");
-            AgregarRegla("IN16", "PR29", "PR29", "CE1", "TIPO_VAR", "CE7", "IDV", "CE7", "IDV", "CE2", "CE8");
-            AgregarRegla("IN17", "PR30", "PR30", "CE1", "CE2", "CE8");
-            AgregarRegla("IN18", "PR31", "PR31", "CE1", "CAD", "CE7", "CNU", "CE2", "CE8");
-
-            // 6. Funciones
-            AgregarRegla("IN19", "PR2", "PR2", "TIPO_RET", "IDF", "CE1", "PARAM", "CE2", "CE3", "INS", "CE4");
-            foreach (var pr in prTipos) AgregarRegla("TIPO_RET", pr, "TIPO_VAR");
-            AgregarRegla("TIPO_RET", "PR28", "PR28");
-
-            foreach (var pr in prTipos) AgregarRegla("PARAM", pr, "TIPO_VAR", "IDV", "PARAM_P");
-            AgregarRegla("PARAM", "CE2", "e");
-
-            AgregarRegla("PARAM_P", "CE7", "CE7", "TIPO_VAR", "IDV", "PARAM_P");
-            AgregarRegla("PARAM_P", "CE2", "e");
-
-            AgregarRegla("IN21", "PR3", "PR3", "EXP_OPC", "CE8");
-
-            List<string> firstExp = new List<string> { "IDV", "CNU", "CAD", "CAR", "PR20", "PR21", "PR22", "IDF", "CE1" };
-            foreach (var f in firstExp) AgregarRegla("EXP_OPC", f, "EXP");
-            AgregarRegla("EXP_OPC", "CE8", "e");
-
-            AgregarRegla("IN22", "IDF", "CALL_FUNC", "CE8");
-            AgregarRegla("CALL_FUNC", "IDF", "IDF", "CE1", "ARG", "CE2");
-            foreach (var f in firstExp) AgregarRegla("ARG", f, "EXP", "ARG_P");
-            AgregarRegla("ARG", "CE2", "e");
-            AgregarRegla("ARG_P", "CE7", "CE7", "EXP", "ARG_P");
-            AgregarRegla("ARG_P", "CE2", "e");
-
-            // 8. Condiciones
-            List<string> firstCond = new List<string> { "OPL3", "IDV", "CNU", "CAD", "CAR", "PR20", "PR21", "PR22", "IDF", "CE1" };
-            foreach (var f in firstCond) AgregarRegla("COND", f, "COND_OR");
-            foreach (var f in firstCond) AgregarRegla("COND_OR", f, "COND_AND", "COND_OR_P");
-
-            AgregarRegla("COND_OR_P", "OPL2", "OPL2", "COND_AND", "COND_OR_P");
-            AgregarRegla("COND_OR_P", "CE2", "e"); AgregarRegla("COND_OR_P", "CE8", "e");
-
-            foreach (var f in firstCond) AgregarRegla("COND_AND", f, "COND_NOT", "COND_AND_P");
-
-            AgregarRegla("COND_AND_P", "OPL1", "OPL1", "COND_NOT", "COND_AND_P");
-            AgregarRegla("COND_AND_P", "OPL2", "e"); AgregarRegla("COND_AND_P", "CE2", "e"); AgregarRegla("COND_AND_P", "CE8", "e");
-
-            AgregarRegla("COND_NOT", "OPL3", "OPL3", "COND_NOT");
-            foreach (var f in firstExp) AgregarRegla("COND_NOT", f, "COND_REL");
-
-            foreach (var f in firstExp) AgregarRegla("COND_REL", f, "EXP", "REL_OPC");
-
-            List<string> opRels = new List<string> { "OPR1", "OPR2", "OPR3", "OPR4", "OPR5", "OPR6" };
-
-            // CORRECCIÓN APLICADA: Directamente mapear 'r' en lugar del genérico 'OPR'
-            foreach (var r in opRels) AgregarRegla("REL_OPC", r, r, "EXP");
-
-            AgregarRegla("REL_OPC", "CE2", "e"); AgregarRegla("REL_OPC", "CE8", "e");
-            AgregarRegla("REL_OPC", "OPL1", "e"); AgregarRegla("REL_OPC", "OPL2", "e");
-
-            // 9. Expresiones aritméticas
-            foreach (var f in firstExp) AgregarRegla("EXP", f, "TERM", "EXP_P");
-
-            AgregarRegla("EXP_P", "OPA+", "OPA+", "TERM", "EXP_P");
-            AgregarRegla("EXP_P", "OPA-", "OPA-", "TERM", "EXP_P");
-            AgregarRegla("EXP_P", "CE2", "e"); AgregarRegla("EXP_P", "CE8", "e");
-            AgregarRegla("EXP_P", "CE7", "e"); foreach (var r in opRels) AgregarRegla("EXP_P", r, "e");
-            AgregarRegla("EXP_P", "OPL1", "e"); AgregarRegla("EXP_P", "OPL2", "e");
-
-            foreach (var f in firstExp) AgregarRegla("TERM", f, "POT", "TERM_P");
-            AgregarRegla("TERM_P", "OPA*", "OPA*", "POT", "TERM_P");
-            AgregarRegla("TERM_P", "OPA/", "OPA/", "POT", "TERM_P");
-            AgregarRegla("TERM_P", "OPA+", "e"); AgregarRegla("TERM_P", "OPA-", "e");
-            AgregarRegla("TERM_P", "CE2", "e"); AgregarRegla("TERM_P", "CE8", "e");
-            AgregarRegla("TERM_P", "CE7", "e"); foreach (var r in opRels) AgregarRegla("TERM_P", r, "e");
-            AgregarRegla("TERM_P", "OPL1", "e"); AgregarRegla("TERM_P", "OPL2", "e");
-
-            foreach (var f in firstExp) AgregarRegla("POT", f, "VALOR", "POT_P");
-            AgregarRegla("POT_P", "OPA^", "OPA^", "POT");
-            AgregarRegla("POT_P", "OPA*", "e"); AgregarRegla("POT_P", "OPA/", "e");
-            AgregarRegla("POT_P", "OPA+", "e"); AgregarRegla("POT_P", "OPA-", "e");
-            AgregarRegla("POT_P", "CE2", "e"); AgregarRegla("POT_P", "CE8", "e");
-            AgregarRegla("POT_P", "CE7", "e"); foreach (var r in opRels) AgregarRegla("POT_P", r, "e");
-            AgregarRegla("POT_P", "OPL1", "e"); AgregarRegla("POT_P", "OPL2", "e");
-
-            AgregarRegla("VALOR", "IDV", "IDV");
-            AgregarRegla("VALOR", "CNU", "CNU");
-            AgregarRegla("VALOR", "CAD", "CAD");
-            AgregarRegla("VALOR", "CAR", "CAR");
-            AgregarRegla("VALOR", "PR20", "PR20");
-            AgregarRegla("VALOR", "PR21", "PR21");
-            AgregarRegla("VALOR", "PR22", "PR22");
-            AgregarRegla("VALOR", "IDF", "CALL_FUNC");
-            AgregarRegla("VALOR", "CE1", "CE1", "EXP", "CE2");
-        }
-
-        // Helper para llenar tablaM más limpio
-        private void AgregarRegla(string noTerminal, string token, params string[] produccion)
-        {
-            if (!tablaM.ContainsKey(noTerminal)) tablaM[noTerminal] = new Dictionary<string, List<string>>();
-            tablaM[noTerminal][token] = new List<string>(produccion);
-        }
-
-        // -------------------- Motor del Analizador Sintáctico LL1 --------------------
+        // -------------------- Análisis Sintáctico --------------------
 
         private void EjecutarAnalisisSintactico()
         {
-            Stack<string> pila = new Stack<string>();
-            pila.Push("EOF");
-            pila.Push("S"); // Símbolo Inicial
-
-            tokensSintactico.Add(("EOF", "$", scintilla1.Lines.Count));
-            int indice = 0;
-
-            while (pila.Count > 0 && indice < tokensSintactico.Count)
-            {
-                string cima = pila.Peek();
-                var tokenActual = tokensSintactico[indice];
-
-                // Éxito total
-                if (cima == "EOF" && tokenActual.Tipo == "EOF") break;
-
-                if (EsTerminalSintactico(cima))
-                {
-                    if (cima == tokenActual.Tipo)
-                    {
-                        pila.Pop(); // Match 
-                        indice++;
-                    }
-                    else
-                    {
-                        // TRADUCCIÓN DEL ERROR (Falta un terminal como ; o })
-                        string esperado = TraducirToken(cima);
-                        erroresSintacticos.Add((tokenActual.Linea, $"OMISIÓN: Falta {esperado} cerca de '{tokenActual.Valor}'"));
-
-                        pila.Pop(); // RECUPERACIÓN MODO PÁNICO: Asumimos que se omitió y seguimos
-                    }
-                }
-                else
-                {
-                    if (tablaM.ContainsKey(cima) && tablaM[cima].ContainsKey(tokenActual.Tipo))
-                    {
-                        pila.Pop();
-                        var produccion = tablaM[cima][tokenActual.Tipo];
-
-                        // Insertamos en la pila en orden inverso
-                        for (int p = produccion.Count - 1; p >= 0; p--)
-                        {
-                            if (produccion[p] != "e") pila.Push(produccion[p]);
-                        }
-                    }
-                    // ESTO EVITA LA CASCADA: Si no hay regla, pero el No Terminal se puede anular (epsilon)
-                    // lo forzamos a anularse en lugar de crashear todo el bloque.
-                    else if (tablaM.ContainsKey(cima) && tablaM[cima].Values.Any(prod => prod.Count == 1 && prod[0] == "e"))
-                    {
-                        // PÁNICO SUAVE: Forzamos la transición a epsilon y bajamos en la pila
-                        pila.Pop();
-                    }
-                    else
-                    {
-                        // TRADUCCIÓN DEL ERROR (Estructura no reconocida)
-                        string ayudaSintaxis = ObtenerAyudaSintaxis(cima);
-                        erroresSintacticos.Add((tokenActual.Linea, $"SINTAXIS INVÁLIDA: Token inesperado '{tokenActual.Valor}'. {ayudaSintaxis}"));
-
-                        // PÁNICO FUERTE (Sincronización): Saltamos el código dañado hasta el siguiente punto y coma ';'
-                        while (indice < tokensSintactico.Count &&
-                               tokensSintactico[indice].Tipo != "CE8" &&
-                               tokensSintactico[indice].Tipo != "CE4" &&
-                               tokensSintactico[indice].Tipo != "EOF")
-                        {
-                            indice++;
-                        }
-
-                        // Consumimos el punto y coma para arrancar la siguiente instrucción limpios
-                        if (indice < tokensSintactico.Count && tokensSintactico[indice].Tipo == "CE8")
-                        {
-                            indice++;
-                        }
-
-                        // Limpiamos la pila de la instrucción matemática dañada, dejándola lista para la próxima instrucción
-                        while (pila.Count > 0 && pila.Peek() != "INS" && pila.Peek() != "S" && pila.Peek() != "EOF")
-                        {
-                            pila.Pop();
-                        }
-                    }
-                }
-            }
+            erroresSintacticos.AddRange(
+                analizadorSintactico.Analizar(tokensSintactico, scintilla1.Lines.Count));
         }
-
-        // --- TRADUCTORES DE MENSAJES DE ERROR ---
-
-        private string TraducirToken(string token)
-        {
-            switch (token)
-            {
-                case "PR1": return "INICIO (INI)";
-                case "PR2": return "FUNCION (FUNC)";
-                case "PR11": return "SI";
-                case "PR12": return "SINO";
-                case "PR13": return "ENCASO";
-                case "PR15": return "MIENTRAS (MIENT)";
-                case "PR16": return "REPETIR (REPT)";
-                case "PR18": return "POR";
-                case "CE1": return "paréntesis de apertura '('";
-                case "CE2": return "paréntesis de cierre ')'";
-                case "CE3": return "llave de apertura '{'";
-                case "CE4": return "llave de cierre '}'";
-                case "CE7": return "coma ','";
-                case "CE8": return "punto y coma ';'";
-                case "CE20": return "dos puntos ':'";
-                case "IDV": return "un identificador de variable";
-                case "IDF": return "un identificador de función";
-                case "ASIG": return "operador de asignación '='";
-                case "CNU": return "un valor numérico";
-                case "CAD": return "una cadena de texto";
-                default:
-                    if (token.StartsWith("PR")) return $"la palabra reservada {token}";
-                    if (token.StartsWith("OPA")) return $"un operador aritmético";
-                    if (token.StartsWith("OPR")) return $"un operador relacional";
-                    if (token.StartsWith("OPL")) return $"un operador lógico";
-                    return $"'{token}'";
-            }
-        }
-
-        private string ObtenerAyudaSintaxis(string noTerminal)
-        {
-            switch (noTerminal)
-            {
-                case "IN01": return "Sintaxis esperada: INI { <instrucciones> }";
-                case "IN04": return "Sintaxis de SI: SI (<Condicion>) { <Instrucciones> } SINO { <Instrucciones> }";
-                case "IN05": return "Sintaxis de ENCASO: ENCASO (<IDV>) { <Valor>: <Instrucciones> ROMPER; DFCT: <Instrucciones> ROMPER; }";
-                case "IN06": return "Sintaxis de MIENTRAS: MIENT (<Condicion>) { <Instrucciones> }";
-                case "IN07": return "Sintaxis de REPETIR: REPT { <Instrucciones> } HASTA (<Condicion>);";
-                case "IN08": return "Sintaxis de POR: POR (<Asignacion> <Condicion>; <Paso>) { <Instrucciones> }";
-                case "IN19": return "Sintaxis de FUNCION: FUNC <Tipo> <IDF> (<Parametros>) { <Instrucciones> REGR <Valor>; }";
-                case "EXP":
-                case "VALOR": return "Falta un operando (variable, número o cadena).";
-                case "POT_P":
-                case "TERM_P":
-                case "EXP_P": return "Falta operador aritmético o terminar la línea con ';'.";
-                case "COND": return "Se esperaba una condición lógica o relacional válida.";
-                case "TIPO_VAR": return "Se requiere declarar el tipo de dato (ENT, DEC, TXT, BOOL, CAR).";
-                case "ASIG_OPC": return "Falta el operador de asignación '=' o el cierre con ';'.";
-                default: return "Verifique la escritura de la instrucción según el lenguaje GatoSabe.";
-            }
-        }
-
-        private bool EsTerminalSintactico(string simbolo)
-        {
-            // Reconoce todos los terminales de ACT 3. Definiciones Regulares
-            return simbolo.StartsWith("PR") || simbolo.StartsWith("CE") ||
-                   simbolo.StartsWith("OPA") || simbolo.StartsWith("OPL") ||
-                   simbolo.StartsWith("OPR") || simbolo == "IDV" || simbolo == "IDF" ||
-                   simbolo == "CNU" || simbolo == "CAD" || simbolo == "CAR" ||
-                   simbolo == "ASIG" || simbolo == "EOF";
-        }
-
         // -------------------- Resto de métodos de tu clase original --------------------
 
         private void ReAnalizarTodo()
@@ -523,14 +170,11 @@ namespace Automatas
 
         private void scintilla1_TextChanged(object sender, EventArgs e)
         {
-            int linea = scintilla1.CurrentLine;
-            int start = scintilla1.Lines[linea].Position;
-            int length = scintilla1.Lines[linea].Length;
+            scintilla1.StartStyling(0);
+            scintilla1.SetStyling(scintilla1.TextLength, 0);
 
-            scintilla1.StartStyling(start);
-            scintilla1.SetStyling(length, 0);
-
-            ReAnalizarLinea(linea);
+            ReAnalizarTodo();
+            scintilla1.Refresh();
         }
 
         private void Scintilla1_StyleNeeded(object sender, StyleNeededEventArgs e)
@@ -555,29 +199,8 @@ namespace Automatas
 
         private List<(int linea, int columna, string token)> TokenizarLinea(string linea, int numLinea)
         {
-            var tokens = new List<(int linea, int columna, string token)>();
-            int j = 0;
-
-            while (j < linea.Length)
-            {
-                if (char.IsWhiteSpace(linea[j])) { j++; continue; }
-                if (linea[j] == '"')
-                {
-                    int inicio = j++;
-                    while (j < linea.Length && linea[j] != '"') j++;
-                    if (j < linea.Length && linea[j] == '"') j++;
-                    string tok = linea.Substring(inicio, j - inicio);
-                    tokens.Add((numLinea, inicio, tok));
-                    continue;
-                }
-                int inicioToken = j;
-                while (j < linea.Length && !char.IsWhiteSpace(linea[j])) j++;
-                string tokNormal = linea.Substring(inicioToken, j - inicioToken);
-                tokens.Add((numLinea, inicioToken, tokNormal));
-            }
-            return tokens;
+            return TokenizadorFuenteGatoSabe.TokenizarLinea(linea, numLinea);
         }
-
         private bool IsTokenInvalido(string tokenResultado)
         {
             if (string.IsNullOrEmpty(tokenResultado)) return false;
@@ -975,3 +598,5 @@ namespace Automatas
         }
     }
 }
+
+
