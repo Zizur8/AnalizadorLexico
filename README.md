@@ -1,4 +1,4 @@
-1. Declaraciones
+1. Declaraciones.
 ~~~
 INI {
     ENT vEdad = 20;
